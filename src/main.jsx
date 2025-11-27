@@ -12,6 +12,7 @@ import Register from './Page/Authintaction/Register.jsx';
 import Login from './Page/Authintaction/Login.jsx';
 import Authprovider from './Component/Authcomponent/Authprovider.jsx';
 import Profile from './Page/Profile.jsx';
+import Editprofiel from './Page/Editprofiel.jsx';
 
 
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path:"/profile",
         Component:Profile
+      },
+      {
+        path:"/editprofile",
+        Component:Editprofiel
       }
     ]
   },
