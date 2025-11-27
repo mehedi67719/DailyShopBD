@@ -89,7 +89,7 @@ const Home = () => {
               <img 
                 src={`https://picsum.photos/200?random=${product}`} 
                 alt="Product" 
-                className="rounded-xl mb-4"
+                className="rounded-xl mb-4 w-full"
               />
               <h3 className="font-bold text-green-800 mb-2">Product {product}</h3>
               <p className="text-gray-700 mb-2">$ {product * 10}.00</p>

@@ -13,6 +13,7 @@ import Login from './Page/Authintaction/Login.jsx';
 import Authprovider from './Component/Authcomponent/Authprovider.jsx';
 import Profile from './Page/Profile.jsx';
 import Editprofiel from './Page/Editprofiel.jsx';
+import Servicearea from './Page/Servicearea.jsx';
 
 
 
@@ -48,6 +49,11 @@ const router = createBrowserRouter([
       {
         path:"/editprofile",
         Component:Editprofiel
+      },
+      {
+        path:'/area',
+        Component:Servicearea,
+        loader:()=>fetch("/warehouses.json").then(res=>res.json())
       }
     ]
   },

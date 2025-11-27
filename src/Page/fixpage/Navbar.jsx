@@ -74,6 +74,7 @@ const Navbar = () => {
         </div>
 
         <NavLink to="/contact" className="hover:text-yellow-300">Contact Us</NavLink>
+        <NavLink to="/area" className="hover:text-yellow-300">Service Area</NavLink>
       </div>
 
       {user ? (
