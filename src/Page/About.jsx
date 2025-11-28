@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const About = () => {
   return (
@@ -46,9 +47,9 @@ const About = () => {
       <div className="text-center">
         <h2 className="text-3xl font-bold text-green-800 mb-4">Join DailyShopBD Today!</h2>
         <p className="text-gray-700 mb-6">Experience hassle-free online shopping with amazing deals every day.</p>
-        <button className="bg-green-700 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-green-600 transition">
+        <Link to='/products' className="bg-green-700 text-white px-6 py-3 rounded-xl font-semibold shadow hover:bg-green-600 transition">
           Start Shopping
-        </button>
+        </Link>
       </div>
     </div>
   );

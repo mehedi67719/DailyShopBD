@@ -1,24 +1,39 @@
 import React, { useContext } from "react";
-import { motion } from "framer-motion";
+
 import { useForm } from "react-hook-form";
 import { Authcontext } from "../../Component/Authcomponent/Authcontext";
 
+import { motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router";
+
+
+
 const Login = () => {
+  const loaction=useLocation();
+  const navigate=useNavigate();
+  const from = loaction.state?.from?.pathname || "/";
+
   const { singingoogle, loginemail, forgetpassword } = useContext(Authcontext);
 
   const { register, handleSubmit, setError, formState: { errors }, getValues } = useForm();
 
   const handelLogin = (data) => {
     loginemail(data.email, data.password)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        navigate(from,{replace:true})
+      })
       .catch(err => setError("password", { type: "manual", message: err.message }));
   };
 
-  const handelGoogle = () => {
-    singingoogle()
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
-  };
+const handelGoogle = () => {
+  singingoogle()
+    .then(res => {
+      console.log(res)
+      navigate(from,{replace:true})
+    })
+    .catch(err => console.log(err));
+};
 
   const handleForget = () => {
     const email = getValues("email");

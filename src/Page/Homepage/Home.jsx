@@ -4,6 +4,7 @@ import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { Link } from 'react-router';
 
 const categories = [
   { name: "Electronics", img: "https://images.unsplash.com/photo-1510557880182-3eec8c875fe0?auto=format&fit=crop&w=400&q=80" },
@@ -41,9 +42,9 @@ const Home = () => {
             </button>
           </div>
 
-          <button className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
+          <Link to='/products' className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
             Shop Now
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -128,9 +129,9 @@ const Home = () => {
           Start Your Shopping Journey Today!
         </h2>
         <p className="mb-6 text-lg md:text-xl">Join DailyShopBD and explore thousands of amazing products.</p>
-        <button className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
+        <Link to='/products' className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
           Shop Now
-        </button>
+        </Link>
       </section>
 
     </div>

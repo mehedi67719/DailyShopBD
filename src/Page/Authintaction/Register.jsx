@@ -3,8 +3,14 @@ import { motion } from "framer-motion";
 import { useForm } from 'react-hook-form';
 import { Authcontext } from '../../Component/Authcomponent/Authcontext';
 import { updateProfile } from 'firebase/auth';
+import { useLocation, useNavigate } from 'react-router';
 
 const Register = () => {
+      const loaction=useLocation();
+  const navigate=useNavigate();
+  const from = loaction.state?.from?.pathname || "/";
+
+
     const { register, handleSubmit, setError, formState: { errors } } = useForm();
     const { singingoogle, registerwithemail, setloading, loading } = useContext(Authcontext);
 
@@ -21,7 +27,10 @@ const Register = () => {
             .then(result => {
                 const newuser = result.user;
                 updateProfile(newuser, { displayName: data.name })
-                    .then(() => setloading(false))
+                    .then(() => {
+                        setloading(false)
+                        navigate(from,{replace:true})
+                    })
                     .catch(err => {
                         console.log(err);
                         setloading(false);
@@ -32,7 +41,10 @@ const Register = () => {
 
     const handelgoogle = () => {
         singingoogle()
-            .then(result => console.log(result))
+            .then(result => {
+                console.log(result)
+                navigate(from,{replace:true})
+            })
             .catch(err => {
                 console.log(err);
                 setloading(false);
