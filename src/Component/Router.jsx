@@ -10,6 +10,7 @@ import Servicearea from "../Page/Servicearea";
 import Products from "../Page/Products";
 import Root from "./Root";
 import PrivateRouter from "./PrivateRouter";
+import Productdetels from "../Page/Productdetels";
 
 
 
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path:"/products",
         Component:Products
+      },
+      {
+        path:'/productdetels/:id',
+        Component:Productdetels
       }
     ]
   },

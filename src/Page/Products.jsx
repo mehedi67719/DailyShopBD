@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate=useNavigate()
 
     useEffect(() => {
         setLoading(true);
@@ -23,6 +25,13 @@ const Products = () => {
                 setLoading(false);
             });
     }, [searchTerm]);
+
+// console.log(products)
+
+    const handelproductclick=(productid)=>{
+        navigate(`/productdetels/${productid}`)
+    }
+
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -59,8 +68,9 @@ const Products = () => {
                 {!loading && !error && products.length > 0 && (
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                         {products.map(product => (
-                            <div
-                                key={product.id}
+                            <button
+                            onClick={()=>handelproductclick(product._id)}
+                                key={product._id}
                                 className="bg-white border rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
                             >
                                 <img
@@ -73,7 +83,7 @@ const Products = () => {
                                     <p className="text-green-600 font-semibold mt-2">${product.price}</p>
                                     <p className="text-gray-600 text-sm mt-2">{product.shortDescription}</p>
                                 </div>
-                            </div>
+                            </button>
                         ))}
                     </div>
                 )}
