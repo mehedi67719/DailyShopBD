@@ -6,17 +6,25 @@ const Products = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [page,setpage]=useState(1);
+    const [hasmore,sethasmore]=useState(true);
     const navigate=useNavigate()
 
     useEffect(() => {
         setLoading(true);
-        fetch(`http://localhost:3000/products?search=${searchTerm}`)
+        fetch(`http://localhost:3000/products?search=${searchTerm}&page=${page}&limit=8`)
             .then(res => {
                 if (!res.ok) throw new Error("Network response was not ok");
                 return res.json();
             })
             .then(data => {
-                setProducts(data);
+                if(page==1){
+                    setProducts(data.products)
+                }
+                else{
+                    setProducts(prev=>[...prev,...data.products])
+                }
+                sethasmore(page < data.totalpages);
                 setLoading(false);
                 setError(null);
             })
@@ -24,7 +32,7 @@ const Products = () => {
                 setError(err.message);
                 setLoading(false);
             });
-    }, [searchTerm]);
+    }, [searchTerm,page]);
 
 // console.log(products)
 
@@ -90,8 +98,14 @@ const Products = () => {
 
                 {!loading && !error && products.length > 0 && (
                     <div className="flex justify-center mt-6">
-                        <button className='px-6 py-2 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition'>
-                            Next
+                        <button 
+                        type='button'
+                            onClick={() => setpage(prev => prev + 1)}
+                            disabled={!hasmore}
+                            className={`px-6 py-2 text-white font-bold rounded-xl transition 
+                                ${hasmore ? "bg-green-600 hover:bg-green-700" : "bg-gray-400 cursor-not-allowed"}`}
+                        >
+                            {hasmore ? "Next" : "No More Products"}
                         </button>
                     </div>
                 )}

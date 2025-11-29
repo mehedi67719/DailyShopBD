@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -17,10 +17,30 @@ const categories = [
 ];
 
 const Home = () => {
+
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchtopproducts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("http://localhost:3000/top-rated-products");
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchtopproducts();
+  }, []);
+
   return (
     <div className="bg-gray-50 min-h-screen">
 
-    
+  
       <section className="bg-green-800 text-white py-20 px-6 md:px-20 flex flex-col items-center text-center">
         <div className="md:w-2/3 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
@@ -30,17 +50,6 @@ const Home = () => {
             Discover amazing products at unbeatable prices. Shop with ease and enjoy fast delivery!
           </p>
 
- 
-          <div className="w-full md:w-3/4 flex mb-6">
-            <input
-              type="text"
-              placeholder="Search for products..."
-              className="w-full px-6 py-3 rounded-l-xl focus:outline-none border-black bg-white text-black"
-            />
-            <button className="bg-yellow-400 text-green-900 px-6 py-3 rounded-r-xl font-bold shadow hover:bg-yellow-300 transition -ml-1">
-              Search
-            </button>
-          </div>
 
           <Link to='/products' className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
             Shop Now
@@ -48,7 +57,7 @@ const Home = () => {
         </div>
       </section>
 
-     
+      
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
           Shop by Category
@@ -79,30 +88,38 @@ const Home = () => {
         </Swiper>
       </section>
 
-   
       <section className="py-16 px-6 md:px-20 bg-gray-100">
         <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
           Popular Products
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {[1,2,3,4].map((product) => (
-            <div key={product} className="bg-white rounded-xl shadow-lg p-4 hover:shadow-2xl transition cursor-pointer">
-              <img 
-                src={`https://picsum.photos/200?random=${product}`} 
-                alt="Product" 
-                className="rounded-xl mb-4 w-full"
-              />
-              <h3 className="font-bold text-green-800 mb-2">Product {product}</h3>
-              <p className="text-gray-700 mb-2">$ {product * 10}.00</p>
-              <button className="bg-green-800 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition">
-                Add to Cart
-              </button>
-            </div>
-          ))}
+
+        {loading ? (
+          <p className="text-center text-lg font-bold">Loading products...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {product.map((item) => (
+              <Link to={`/productdetels/${item._id}`}  key={item._id} className="bg-white rounded-xl shadow-lg p-4 hover:shadow-2xl transition cursor-pointer">
+                <img 
+                  src={item.image} 
+                  alt={item.name} 
+                  className="rounded-xl mb-4 w-full h-48 object-cover"
+                />
+                <h3 className="font-bold text-green-800 mb-2">{item.name}</h3>
+                <p className="text-gray-700 mb-2">${item.price}</p>
+                <p className="text-yellow-500 mb-2">Rating: {item.rating} ⭐</p>
+                <button className="bg-green-800 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition">
+                  Add to Cart
+                </button>
+              </Link>
+            ))}
+          </div>
+        )}
+        <div className='flex justify-center'>
+          <Link to='/products' className='p-3  mt-10 bg-green-600 hover:bg-green-700 font-bold  text-white rounded-xl'>All Products</Link>
         </div>
       </section>
 
-     
+
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
           Why Choose DailyShopBD
@@ -123,7 +140,6 @@ const Home = () => {
         </div>
       </section>
 
-      
       <section className="py-16 px-6 md:px-20 text-center bg-green-800 text-white rounded-t-3xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Start Your Shopping Journey Today!
