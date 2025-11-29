@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {  useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Authcontext } from "../Component/Authcomponent/Authcontext";
+
+import Useauth from "../Component/hook/Useauth";
 
 const EditProfile = () => {
-  const { user } = useContext(Authcontext);
-
+  const { user } = Useauth()
   const [profileData, setProfileData] = useState({
     displayName: "",
     bio: "",

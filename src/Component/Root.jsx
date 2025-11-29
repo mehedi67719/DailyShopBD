@@ -1,7 +1,8 @@
 import React from 'react';
-import Footer from '../Page/fixpage/Footer';
 import { Outlet } from 'react-router';
-import Navbar from '../Page/fixpage/Navbar';
+import Navbar from './fixpage/Navbar';
+import Footer from './fixpage/Footer';
+
 
 const Root = () => {
     return (

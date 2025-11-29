@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Authcontext } from "../Component/Authcomponent/Authcontext";
+
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router";
 import { deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import Useauth from "../Component/hook/Useauth";
 
 const Profile = () => {
-  const { user } = useContext(Authcontext);
+  const { user } = Useauth()
 
   if (!user) {
     return (

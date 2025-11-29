@@ -11,6 +11,7 @@ import Products from "../Page/Products";
 import Root from "./Root";
 import PrivateRouter from "./PrivateRouter";
 import Productdetels from "../Page/Productdetels";
+import Cart from "../Page/Cart";
 
 
 
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path:'/productdetels/:id',
         Component:Productdetels
+      },
+      {
+        path:'/cart',
+        Component:Cart
       }
     ]
   },

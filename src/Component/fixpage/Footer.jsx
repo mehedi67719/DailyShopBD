@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../../Component/logo/Logo';
+import Logo from '../logo/Logo';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 
 const Footer = () => {
@@ -40,10 +40,10 @@ const Footer = () => {
         <div>
           <h3 className="font-bold text-lg mb-4">Follow Us</h3>
           <div className="flex gap-4 text-gray-200">
-            <a href="#" className="hover:text-yellow-300 transition"><FaFacebookF /></a>
-            <a href="#" className="hover:text-yellow-300 transition"><FaTwitter /></a>
-            <a href="#" className="hover:text-yellow-300 transition"><FaInstagram /></a>
-            <a href="#" className="hover:text-yellow-300 transition"><FaLinkedinIn /></a>
+            <a href="https://www.facebook.com/mehedi.hasana.835189" className="hover:text-yellow-300 transition"><FaFacebookF /></a>
+            <a href="https://x.com/" className="hover:text-yellow-300 transition"><FaTwitter /></a>
+            <a href="https://www.instagram.com/mehedihassan67710/" className="hover:text-yellow-300 transition"><FaInstagram /></a>
+            <a href="https://www.linkedin.com/in/mehedihassanjashore/" className="hover:text-yellow-300 transition"><FaLinkedinIn /></a>
           </div>
         </div>
 

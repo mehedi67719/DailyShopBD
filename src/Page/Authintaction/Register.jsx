@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+
 import { motion } from "framer-motion";
 import { useForm } from 'react-hook-form';
-import { Authcontext } from '../../Component/Authcomponent/Authcontext';
+
 import { updateProfile } from 'firebase/auth';
 import { useLocation, useNavigate } from 'react-router';
+import Useauth from '../../Component/hook/Useauth';
 
 const Register = () => {
       const loaction=useLocation();
@@ -12,7 +13,7 @@ const Register = () => {
 
 
     const { register, handleSubmit, setError, formState: { errors } } = useForm();
-    const { singingoogle, registerwithemail, setloading, loading } = useContext(Authcontext);
+    const { singingoogle, registerwithemail, setloading, loading } = Useauth()
 
     const handelregister = (data) => {
         if (data.password !== data.Confirm_password) {

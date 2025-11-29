@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+
 
 import { useForm } from "react-hook-form";
-import { Authcontext } from "../../Component/Authcomponent/Authcontext";
+
 
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router";
+import Useauth from "../../Component/hook/Useauth";
 
 
 
@@ -13,7 +14,7 @@ const Login = () => {
   const navigate=useNavigate();
   const from = loaction.state?.from?.pathname || "/";
 
-  const { singingoogle, loginemail, forgetpassword } = useContext(Authcontext);
+  const { singingoogle, loginemail, forgetpassword } = Useauth()
 
   const { register, handleSubmit, setError, formState: { errors }, getValues } = useForm();
 

@@ -1,17 +1,19 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, {  useState, useEffect, useRef } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
-import Logo from '../../Component/logo/Logo';
+import Logo from '../logo/Logo';
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link, NavLink } from 'react-router';
-import { Authcontext } from '../../Component/Authcomponent/Authcontext';
+
 import { FaUserCircle } from 'react-icons/fa';
+import { FaShoppingCart } from "react-icons/fa";
+import Useauth from '../hook/Useauth';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false); 
   const [profileOpen, setProfileOpen] = useState(false);   
   const [mobileMenu, setMobileMenu] = useState(false);
 
-  const { user, logout } = useContext(Authcontext);
+  const { user, logout } = Useauth()
 
   const categoryRef = useRef(null);
   const profileRef = useRef(null);
@@ -53,6 +55,7 @@ const Navbar = () => {
         <NavLink to="/" className="hover:text-yellow-300">Home</NavLink>
         <NavLink to="/products" className="hover:text-yellow-300">Products</NavLink>
         <NavLink to="/about" className="hover:text-yellow-300">About</NavLink>
+        
 
     
         <div className="relative" ref={categoryRef}>
@@ -76,6 +79,7 @@ const Navbar = () => {
 
         <NavLink to="/contact" className="hover:text-yellow-300">Contact Us</NavLink>
         <NavLink to="/area" className="hover:text-yellow-300">Service Area</NavLink>
+        <NavLink to="/cart" className="hover:text-yellow-300 text-2xl "><FaShoppingCart /></NavLink>
       </div>
 
       {user ? (

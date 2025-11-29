@@ -6,59 +6,45 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Link } from 'react-router';
 
-
-
-
 const Home = () => {
-
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories,setcategories]=useState([])
-
-
-  useEffect(()=>{
-    const fetchcategory=async()=>{
-       try{
-       setLoading(true);
-      const res=await fetch("http://localhost:3000/categories");
-      const data=await res.json();
-      setcategories(data);
-     }
-     catch(err){
-      console.log(err)
-     }
-     finally{
-      setLoading(false)
-     }
-   
-  }
-
-  fetchcategory();
-},[])
-
-
-
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchtopproducts = async () => {
+    const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:3000/top-rated-products");
+        const res = await fetch("http://localhost:3000/categories");
         const data = await res.json();
-        setProduct(data);
+        setCategories(data);
       } catch (err) {
         console.log(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchtopproducts();
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchTopProducts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("http://localhost:3000/top-rated-products");
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTopProducts();
   }, []);
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
-  
       <section className="bg-green-800 text-white py-20 px-6 md:px-20 flex flex-col items-center text-center">
         <div className="md:w-2/3 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
@@ -67,20 +53,16 @@ const Home = () => {
           <p className="text-lg md:text-xl mb-6">
             Discover amazing products at unbeatable prices. Shop with ease and enjoy fast delivery!
           </p>
-
-
           <Link to='/products' className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
             Shop Now
           </Link>
         </div>
       </section>
 
-      
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
           Shop by Category
         </h2>
-
         <Swiper
           slidesPerView={3}
           spaceBetween={20}
@@ -110,33 +92,36 @@ const Home = () => {
         <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
           Popular Products
         </h2>
-
         {loading ? (
           <p className="text-center text-lg font-bold">Loading products...</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {product.map((item) => (
-              <Link to={`/productdetels/${item._id}`}  key={item._id} className="bg-white rounded-xl shadow-lg p-4 hover:shadow-2xl transition cursor-pointer">
-                <img 
-                  src={item.image} 
-                  alt={item.name} 
-                  className="rounded-xl mb-4 w-full h-48 object-cover"
-                />
-                <h3 className="font-bold text-green-800 mb-2">{item.name}</h3>
-                <p className="text-gray-700 mb-2">${item.price}</p>
-                <p className="text-yellow-500 mb-2">Rating: {item.rating} ⭐</p>
-                <button className="bg-green-800 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition">
-                  Add to Cart
-                </button>
-              </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map(product => (
+              <div key={product._id} className="bg-white border rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl flex flex-col">
+                <Link to={`/productdetels/${product._id}`} className="flex-1 cursor-pointer">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-56 object-cover"
+                  />
+                  <div className="p-4 flex flex-col">
+                    <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
+                    <p className="text-green-600 font-semibold mt-2">${product.price}</p>
+                    <p className="text-gray-600 text-sm mt-2">{product.shortDescription}</p>
+                  </div>
+                </Link>
+                <div className='my-2.5 w-full flex gap-2.5 px-2'>
+                  <button className='flex-1 font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded text-white'>Add to Cart</button>
+                  <button className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'>Order Now</button>
+                </div>
+              </div>
             ))}
           </div>
         )}
-        <div className='flex justify-center'>
-          <Link to='/products' className='p-3  mt-10 bg-green-600 hover:bg-green-700 font-bold  text-white rounded-xl'>All Products</Link>
+        <div className='flex justify-center mt-10'>
+          <Link to='/products' className='px-6 py-3 bg-green-600 hover:bg-green-700 font-bold text-white rounded-xl'>All Products</Link>
         </div>
       </section>
-
 
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
@@ -167,7 +152,6 @@ const Home = () => {
           Shop Now
         </Link>
       </section>
-
     </div>
   );
 };
