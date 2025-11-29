@@ -6,20 +6,38 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Link } from 'react-router';
 
-const categories = [
-  { name: "Electronics", img: "https://images.unsplash.com/photo-1510557880182-3eec8c875fe0?auto=format&fit=crop&w=400&q=80" },
-  { name: "Fashion", img: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&q=80" },
-  { name: "Books", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80" },
-  { name: "Home & Living", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80" },
-  { name: "Sports", img: "https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=400&q=80" },
-  { name: "Toys", img: "https://images.unsplash.com/photo-1606813908029-c03f868c6ee3?auto=format&fit=crop&w=400&q=80" },
-  { name: "Beauty", img: "https://images.unsplash.com/photo-1600185364101-6ed5d89fa57b?auto=format&fit=crop&w=400&q=80" },
-];
+
+
 
 const Home = () => {
 
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categories,setcategories]=useState([])
+
+
+  useEffect(()=>{
+    const fetchcategory=async()=>{
+       try{
+       setLoading(true);
+      const res=await fetch("http://localhost:3000/categories");
+      const data=await res.json();
+      setcategories(data);
+     }
+     catch(err){
+      console.log(err)
+     }
+     finally{
+      setLoading(false)
+     }
+   
+  }
+
+  fetchcategory();
+},[])
+
+
+
 
   useEffect(() => {
     const fetchtopproducts = async () => {
