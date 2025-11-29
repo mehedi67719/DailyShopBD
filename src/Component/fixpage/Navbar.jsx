@@ -1,22 +1,52 @@
-import React, {  useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import Logo from '../logo/Logo';
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link, NavLink } from 'react-router';
-
-import { FaUserCircle } from 'react-icons/fa';
-import { FaShoppingCart } from "react-icons/fa";
+import { FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import Useauth from '../hook/Useauth';
 
 const Navbar = () => {
+
+
+
   const [dropdownOpen, setDropdownOpen] = useState(false); 
   const [profileOpen, setProfileOpen] = useState(false);   
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [carts,setCarts]=useState(null)
+  const [loading,setLoading]=useState(true)
 
-  const { user, logout } = Useauth()
+  const { user, logout } = Useauth();
 
   const categoryRef = useRef(null);
   const profileRef = useRef(null);
+
+
+
+
+    useEffect(() => {
+      if(!user){
+          return;
+      }
+      const getCart = async () => {
+        try {
+          setLoading(true);
+          const res = await fetch("http://localhost:3000/cart");
+          const data = await res.json();
+          const filterdata=data.filter(d=>d.userEmail.toString()===user.email.toString())
+          setCarts(filterdata);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      getCart();
+    }, [user]);
+
+
+
+
 
   useEffect(() => {
     const handler = (e) => {
@@ -33,31 +63,22 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout()
-      .then(() => {
-        console.log("User Logged Out");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      .then(() => console.log("User Logged Out"))
+      .catch((error) => console.error(error));
   };
 
   return (
     <nav className="bg-green-800 shadow-md px-6 py-4 flex justify-between items-center relative z-50">
 
-    
       <div className="flex items-center shadow-lg p-1 rounded-xl">
         <Link to="/"><Logo /></Link>
       </div>
 
-     
       <div className="hidden md:flex gap-8 text-white font-semibold items-center">
-
         <NavLink to="/" className="hover:text-yellow-300">Home</NavLink>
         <NavLink to="/products" className="hover:text-yellow-300">Products</NavLink>
         <NavLink to="/about" className="hover:text-yellow-300">About</NavLink>
-        
 
-    
         <div className="relative" ref={categoryRef}>
           <button 
             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -79,7 +100,7 @@ const Navbar = () => {
 
         <NavLink to="/contact" className="hover:text-yellow-300">Contact Us</NavLink>
         <NavLink to="/area" className="hover:text-yellow-300">Service Area</NavLink>
-        <NavLink to="/cart" className="hover:text-yellow-300 text-2xl "><FaShoppingCart /></NavLink>
+        <NavLink to="/cart" className="hover:text-yellow-300 text-2xl flex items-center"><FaShoppingCart />({carts?.length})</NavLink>
       </div>
 
       {user ? (
@@ -126,14 +147,12 @@ const Navbar = () => {
         </div>
       )}
 
-     
       <div className="md:hidden text-white text-3xl" onClick={() => setMobileMenu(!mobileMenu)}>
         {mobileMenu ? <FiX /> : <FiMenu />}
       </div>
 
       {mobileMenu && (
         <div className="absolute top-full left-0 w-full bg-green-900 text-white flex flex-col py-5 px-6 md:hidden gap-4 shadow-lg">
-
           <NavLink onClick={() => setMobileMenu(false)} to="/" className="hover:text-yellow-300">Home</NavLink>
           <NavLink onClick={() => setMobileMenu(false)} to="/about" className="hover:text-yellow-300">About</NavLink>
 
@@ -159,28 +178,25 @@ const Navbar = () => {
             </div>
           )}
 
-          <NavLink onClick={() => setMobileMenu(false)} to="/contact" className="hover:text-yellow-300">
-            Contact Us
+          <NavLink onClick={() => setMobileMenu(false)} to="/contact" className="hover:text-yellow-300">Contact Us</NavLink>
+
+          <NavLink onClick={() => setMobileMenu(false)} to="/cart" className="hover:text-yellow-300 flex items-center gap-2 text-2xl">
+            <FaShoppingCart /> Cart({carts.length})
           </NavLink>
 
           {!user && (
             <div className="flex flex-col gap-3 mt-4">
               <Link to="/login">
-                <button className="bg-white text-green-800 px-5 py-2 rounded-xl shadow">
-                  Login
-                </button>
+                <button className="bg-white text-green-800 px-5 py-2 rounded-xl shadow">Login</button>
               </Link>
-
               <Link to="/register">
-                <button className="bg-yellow-400 text-green-900 px-5 py-2 rounded-xl shadow">
-                  Register
-                </button>
+                <button className="bg-yellow-400 text-green-900 px-5 py-2 rounded-xl shadow">Register</button>
               </Link>
             </div>
           )}
-
         </div>
       )}
+
     </nav>
   );
 };
