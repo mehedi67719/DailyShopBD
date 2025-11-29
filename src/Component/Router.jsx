@@ -12,6 +12,7 @@ import Root from "./Root";
 import PrivateRouter from "./PrivateRouter";
 import Productdetels from "../Page/Productdetels";
 import Cart from "../Page/Cart";
+import Orderpage from "../Page/Orderpage";
 
 
 
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
         path:'/cart',
         Component:Cart
         
+      },
+      {
+        path:'/orderpage/:id',
+        Component:Orderpage
       }
     ]
   },

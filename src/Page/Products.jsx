@@ -41,36 +41,32 @@ const Products = () => {
 
     const handelAddToCart = (productId, e) => {
         e.stopPropagation();
+        if(!user){
+           alert("please first login or register then click add to cart");
+           return;
+        }
+    
         const filterproduct = products.find(p => p._id.toString() === productId.toString());
-
-        const data={
-            ...filterproduct,
-            userEmail:user.email
-        };
-        
-        fetch("http://localhost:3000/cart",{
-            method:"POST",
-            headers:{
-                 'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(data)
+        const data = { ...filterproduct, userEmail: user.email };
+        fetch("http://localhost:3000/cart", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         })
-        .then(res=>res.json())
-        .then(Response=>{
-            console.log("added to card",Response);
+        .then(res => res.json())
+        .then(Response => {
             alert('Product added to cart successfully!');
         })
         .catch(err => {
-        console.error('Error adding to cart:', err);
-        alert('Failed to add product to cart.');
-          });
-
-
-        
+            alert('Failed to add product to cart.');
+        });
     }
 
+    const handelorder = (productId, e) => {
+        if(e) e.stopPropagation();
+        navigate(`/orderpage/${productId}`);
+    }
 
-    
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="lg:max-w-[90%] mx-auto">
@@ -130,7 +126,7 @@ const Products = () => {
                                             Add to Cart
                                         </button>
                                         <button 
-                                            onClick={(e) => e.stopPropagation()} 
+                                            onClick={(e) => handelorder(product._id, e)} 
                                             className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'
                                         >
                                             Order Now
