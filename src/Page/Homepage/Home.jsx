@@ -5,11 +5,13 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Link } from 'react-router';
+import Useauth from '../../Component/hook/Useauth';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const {user}=Useauth()
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -42,6 +44,43 @@ const Home = () => {
     };
     fetchTopProducts();
   }, []);
+
+
+
+
+
+      const handelAddToCart = (productId, e) => {
+        e.stopPropagation();
+        const filterproduct = products.find(p => p._id.toString() === productId.toString());
+
+        const data={
+            ...filterproduct,
+            userEmail:user.email
+        };
+        
+        fetch("http://localhost:3000/cart",{
+            method:"POST",
+            headers:{
+                 'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(data)
+        })
+        .then(res=>res.json())
+        .then(Response=>{
+            console.log("added to card",Response);
+            alert('Product added to cart successfully!');
+        })
+        .catch(err => {
+        console.error('Error adding to cart:', err);
+        alert('Failed to add product to cart.');
+          });
+
+
+        
+    }
+
+
+
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -111,7 +150,7 @@ const Home = () => {
                   </div>
                 </Link>
                 <div className='my-2.5 w-full flex gap-2.5 px-2'>
-                  <button className='flex-1 font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded text-white'>Add to Cart</button>
+                  <button onClick={(e)=>handelAddToCart(product._id ,e)} className='flex-1 font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded text-white'>Add to Cart</button>
                   <button className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'>Order Now</button>
                 </div>
               </div>
