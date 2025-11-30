@@ -69,7 +69,8 @@ export const router = createBrowserRouter([
       },
       {
         path:'/orderpage/:id',
-        Component:Orderpage
+        Component:Orderpage,
+        loader:()=>fetch("/warehouses.json").then(res=>res.json())
       }
     ]
   },
