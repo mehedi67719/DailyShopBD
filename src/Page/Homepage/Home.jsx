@@ -4,10 +4,11 @@ import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Useauth from '../../Component/hook/Useauth';
 
 const Home = () => {
+  const navigate=useNavigate()
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -80,6 +81,10 @@ const Home = () => {
     }
 
 
+        const handelorder = (productId, e) => {
+        if(e) e.stopPropagation();
+        navigate(`/orderpage/${productId}`);
+    }
 
 
   return (
@@ -151,7 +156,11 @@ const Home = () => {
                 </Link>
                 <div className='my-2.5 w-full flex gap-2.5 px-2'>
                   <button onClick={(e)=>handelAddToCart(product._id ,e)} className='flex-1 font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded text-white'>Add to Cart</button>
-                  <button className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'>Order Now</button>
+                  <button 
+                  onClick={(e) => handelorder(product._id, e)} 
+                  className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'
+                  >Order Now
+                  </button>
                 </div>
               </div>
             ))}

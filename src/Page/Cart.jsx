@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Useauth from '../Component/hook/Useauth';
 
 const Cart = () => {
+  const { user } = Useauth();
   const [carts, setCarts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = Useauth();
 
   useEffect(() => {
     if (!user) return;
@@ -27,13 +27,15 @@ const Cart = () => {
   }, [user]);
 
   const handeldelete = async (productid) => {
+    // console.log(productid)
     try {
       const res = await fetch(`http://localhost:3000/cart/${productid}`, {
         method: "DELETE"
       });
       const data = await res.json();
+
       if (res.ok) {
-        setCarts(carts.filter(c => c._id.toString() !== productid.toString));
+        setCarts(prev => prev.filter(c => c._id.toString() !== productid.toString()));
         alert(data.message);
       } else {
         alert(data.message);
@@ -43,7 +45,7 @@ const Cart = () => {
       alert("Failed to remove product from cart");
     }
   }
-
+console.log(carts)
   if (loading) return <div className="text-center mt-10 text-green-800 font-bold">Loading...</div>;
   if (!carts || carts.length === 0) return <div className="text-center mt-10 text-green-800 font-bold">Your cart is empty!</div>;
 

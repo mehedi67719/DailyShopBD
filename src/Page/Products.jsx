@@ -10,21 +10,16 @@ const Products = () => {
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const [cartItems, setCartItems] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
         fetch(`http://localhost:3000/products?search=${searchTerm}&page=${page}&limit=8`)
-            .then(res => {
-                if (!res.ok) throw new Error("Network response was not ok");
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                if (page === 1) {
-                    setProducts(data.products);
-                } else {
-                    setProducts(prev => [...prev, ...data.products]);
-                }
+                if (page === 1) setProducts(data.products);
+                else setProducts(prev => [...prev, ...data.products]);
                 setHasMore(page < data.totalpages);
                 setLoading(false);
                 setError(null);
@@ -35,35 +30,50 @@ const Products = () => {
             });
     }, [searchTerm, page]);
 
-    const handleProductClick = (productId) => {
-        navigate(`/productdetels/${productId}`);
-    }
+    useEffect(() => {
+        fetch("http://localhost:3000/cart")
+            .then(res => res.json())
+            .then(data => setCartItems(data))
+            .catch(() => setCartItems([]));
+    }, []);
+
+    const handleProductClick = (productId) => navigate(`/productdetels/${productId}`);
 
     const handelAddToCart = (productId, e) => {
         e.stopPropagation();
-        if(!user){
-           alert("please first login or register then click add to cart");
-           return;
+        if (!user) {
+            alert("Please login first!");
+            return;
         }
-    
-        const filterproduct = products.find(p => p._id.toString() === productId.toString());
-        const data = { ...filterproduct, userEmail: user.email };
+        const product = products.find(p => p._id === productId);
+        if (cartItems.find(item => item._id === productId)) {
+            alert("Product already in cart!");
+            return;
+        }
+        const data = { ...product, userEmail: user.email };
         fetch("http://localhost:3000/cart", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then(Response => {
-            alert('Product added to cart successfully!');
+        .then(resData => {
+            setCartItems(prev => [...prev, { ...data, _id: resData.insertedId }]);
+            alert("Product added to cart successfully!");
         })
-        .catch(err => {
-            alert('Failed to add product to cart.');
-        });
+        .catch(() => alert("Failed to add product to cart."));
     }
 
-    const handelorder = (productId, e) => {
-        if(e) e.stopPropagation();
+    const handelDeleteFromCart = (cartId, e) => {
+        e.stopPropagation();
+        fetch(`http://localhost:3000/cart/${cartId}`, { method: "DELETE" })
+            .then(res => res.json())
+            .then(() => setCartItems(prev => prev.filter(item => item._id !== cartId)))
+            .catch(() => alert("Failed to delete product from cart."));
+    }
+
+    const handelOrder = (productId, e) => {
+        if (e) e.stopPropagation();
         navigate(`/orderpage/${productId}`);
     }
 
@@ -77,27 +87,15 @@ const Products = () => {
                             type="search"
                             placeholder="Search products..."
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={e => setSearchTerm(e.target.value)}
                             className="w-full border-2 border-black text-black px-4 py-2 rounded-lg"
                         />
                     </div>
                 </div>
 
-                {loading && (
-                    <p className='flex justify-center items-center text-black text-2xl font-bold'>
-                        Loading products...
-                    </p>
-                )}
-
-                {error && (
-                    <p className='text-red-600 text-center mt-4'>
-                        Error: {error}
-                    </p>
-                )}
-
-                {!loading && !error && products.length === 0 && (
-                    <p className="text-center text-gray-600">No products found.</p>
-                )}
+                {loading && <p className='text-2xl text-center font-bold'>Loading products...</p>}
+                {error && <p className='text-red-600 text-center mt-4'>Error: {error}</p>}
+                {!loading && !error && products.length === 0 && <p className="text-center text-gray-600">No products found.</p>}
 
                 {!loading && !error && products.length > 0 && (
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
@@ -105,13 +103,9 @@ const Products = () => {
                             <div
                                 key={product._id}
                                 onClick={() => handleProductClick(product._id)}
-                                className="bg-white border rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl flex flex-col cursor-pointer"
+                                className="bg-white border rounded-xl shadow-md overflow-hidden transform transition hover:scale-105 hover:shadow-2xl cursor-pointer flex flex-col"
                             >
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-56 object-cover"
-                                />
+                                <img src={product.image} alt={product.name} className="w-full h-56 object-cover" />
                                 <div className="p-4 flex-1 flex flex-col justify-between">
                                     <div>
                                         <h2 className="text-lg font-bold text-gray-800">{product.name}</h2>
@@ -120,13 +114,13 @@ const Products = () => {
                                     </div>
                                     <div className='my-2.5 w-full flex gap-2.5 px-2'>
                                         <button 
-                                            onClick={(e) => handelAddToCart(product._id, e)} 
+                                            onClick={e => handelAddToCart(product._id, e)} 
                                             className='flex-1 font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded text-white'
                                         >
                                             Add to Cart
                                         </button>
                                         <button 
-                                            onClick={(e) => handelorder(product._id, e)} 
+                                            onClick={e => handelOrder(product._id, e)} 
                                             className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'
                                         >
                                             Order Now

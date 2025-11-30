@@ -13,6 +13,7 @@ import PrivateRouter from "./PrivateRouter";
 import Productdetels from "../Page/Productdetels";
 import Cart from "../Page/Cart";
 import Orderpage from "../Page/Orderpage";
+import Clintorder from "../Page/Clintorder";
 
 
 
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
         path:'/orderpage/:id',
         Component:Orderpage,
         loader:()=>fetch("/warehouses.json").then(res=>res.json())
+      },
+      {
+        path:"clintorder",
+        Component:Clintorder
       }
     ]
   },

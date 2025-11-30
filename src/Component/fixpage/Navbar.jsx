@@ -100,7 +100,7 @@ const Navbar = () => {
 
         <NavLink to="/contact" className="hover:text-yellow-300">Contact Us</NavLink>
         <NavLink to="/area" className="hover:text-yellow-300">Service Area</NavLink>
-        <NavLink to="/cart" className="hover:text-yellow-300 text-2xl flex items-center"><FaShoppingCart />({carts?.length})</NavLink>
+        <NavLink to="/cart" className="hover:text-yellow-300 text-2xl flex items-center"><FaShoppingCart /></NavLink>
       </div>
 
       {user ? (
@@ -126,6 +126,7 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 bg-white text-green-900 w-40 shadow-lg rounded-xl py-2 z-50">
               <Link className="block px-4 py-2 hover:bg-green-100" to="/profile">Profile</Link>
               <Link className="block px-4 py-2 hover:bg-green-100" to="/dashboard">Dashboard</Link>
+              <Link to='/clintorder' className="block px-4 py-2 hover:bg-green-100" >Your orders</Link>
               <button onClick={handleLogout} className="block px-4 py-2 hover:bg-green-100 w-full text-left">
                 Logout
               </button>
@@ -181,7 +182,7 @@ const Navbar = () => {
           <NavLink onClick={() => setMobileMenu(false)} to="/contact" className="hover:text-yellow-300">Contact Us</NavLink>
 
           <NavLink onClick={() => setMobileMenu(false)} to="/cart" className="hover:text-yellow-300 flex items-center gap-2 text-2xl">
-            <FaShoppingCart /> Cart({carts.length})
+            <FaShoppingCart /> 
           </NavLink>
 
           {!user && (
