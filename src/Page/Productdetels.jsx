@@ -1,74 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { set } from 'react-hook-form';
 import { Link, useParams } from 'react-router';
 
 const Productdetels = () => {
-    const {id}=useParams();
-    const [product,setproduct]=useState(null);
-    const [loader,setloader]=useState(true)
-    const [error,seterror]=useState(null)
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
+    const [loader, setLoader] = useState(true);
+    const [error, setError] = useState(null);
 
-    useEffect(()=>{
+    useEffect(() => {
         fetch(`http://localhost:3000/product-detels/${id}`)
-        .then(res=>res.json())
-        .then(data=>{
-            setproduct(data);
-            setloader(false)
-        })
-        .catch(err=>{
-            seterror(err);
-            setloader(false)
-        })
-    },[id])
+            .then(res => res.json())
+            .then(data => {
+                setProduct(data);
+                setLoader(false);
+            })
+            .catch(err => {
+                setError(err);
+                setLoader(false);
+            });
+    }, [id]);
 
-console.log(product)
-
-
-    if(loader){
-        return <p className='flex justify-center items-center text-3xl font-bold'>loading product detels ...</p>
-    }
-
-    if(error){
-        return <p className='flex justify-center items-center text-3xl font-bold'>Error : {error}</p>
-    }
-
-    if(!product){
-        return <p className='flex justify-center items-center text-3xl font-bold'>Product is not found</p>
-    }
+    if (loader) return <p className='flex justify-center items-center text-3xl font-bold mt-20'>Loading product details...</p>;
+    if (error) return <p className='flex justify-center items-center text-3xl font-bold mt-20'>Error: {error}</p>;
+    if (!product) return <p className='flex justify-center items-center text-3xl font-bold mt-20'>Product not found</p>;
 
     return (
-          <div className="p-10 bg-gray-100 min-h-screen flex justify-center items-start">
-            <div className="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row gap-10">
+        <div className="py-6 bg-gray-100 min-h-screen flex justify-center">
+            <div className="w-full max-w-[95%] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row gap-8 lg:gap-12">
                 
-                
-                <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full lg:w-1/2 h-[500px] object-cover"
-                />
+                <div className="w-full lg:w-1/2 h-auto flex justify-center items-center p-4">
+                    <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-[500px] object-contain rounded-xl"
+                    />
+                </div>
 
-               
-                <div className="p-10 flex flex-col justify-between">
-                    <div>
+                <div className="flex-1 p-6 lg:p-10 flex flex-col justify-between">
+                    <div className="overflow-y-auto">
                         <Link to="/products" className="text-blue-600 font-semibold mb-4 inline-block hover:underline">&larr; Back to Products</Link>
-                        <h2 className="text-4xl font-extrabold text-gray-900">{product.name}</h2>
-                        <p className="text-gray-500 text-lg mt-2">{product.category} | {product.brand}</p>
-                        <p className="text-green-600 font-bold text-3xl mt-6">${product.price}</p>
-                        <p className="text-gray-700 mt-6 text-lg leading-relaxed">{product.longDescription}</p>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">{product.name}</h2>
+                        <p className="text-gray-500 text-md md:text-lg mt-2">{product.category} | {product.brand}</p>
+                        <p className="text-green-600 font-bold text-2xl md:text-3xl mt-6">${product.price}</p>
+                        <p className="text-gray-700 mt-6 text-md md:text-lg leading-relaxed">{product.longDescription}</p>
                         <p className={`mt-4 text-lg font-semibold ${product.inStock ? "text-green-600" : "text-red-600"}`}>
                             {product.inStock ? "In Stock ✅" : "Out of Stock ❌"}
                         </p>
-                        <p className="text-yellow-500 mt-2 text-lg">Rating: {product.rating} ({product.reviewsCount} reviews)</p>
+                        <p className="text-yellow-500 mt-2 text-md md:text-lg">Rating: {product.rating} ({product.reviewsCount} reviews)</p>
                     </div>
 
-                   
                     <button
-                        className="mt-10 px-8 py-4 bg-green-600 text-white font-bold text-xl rounded-2xl hover:bg-green-700 transition"
+                        className="mt-6 md:mt-10 px-6 md:px-10 py-3 md:py-4 bg-green-600 text-white font-bold text-lg md:text-xl rounded-2xl hover:bg-green-700 transition w-full"
                         onClick={() => alert('Order placed successfully!')}
                     >
                         Order Now
                     </button>
                 </div>
+
             </div>
         </div>
     );

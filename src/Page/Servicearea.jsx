@@ -29,7 +29,7 @@ const Servicearea = () => {
         
       
 
-      <form onSubmit={handelsubmit} className="p-6 bg-white shadow-md sticky top-0 z-10 flex flex-col items-center">
+      <form onSubmit={handelsubmit} className="py-6  bg-white shadow-md sticky top-0 z-10 flex flex-col items-center">
         <h2 className="text-3xl font-bold text-green-800 mb-4 text-center">
           Search Service Area
         </h2>

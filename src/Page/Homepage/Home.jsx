@@ -8,123 +8,94 @@ import { Link, useNavigate } from 'react-router';
 import Useauth from '../../Component/hook/Useauth';
 
 const Home = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const {user}=Useauth()
+  const { user } = Useauth();
 
   useEffect(() => {
     const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch("http://localhost:3000/categories");
-        const data = await res.json();
-        setCategories(data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+      const res = await fetch("http://localhost:3000/categories");
+      const data = await res.json();
+      setCategories(data);
+      setLoading(false);
     };
     fetchCategories();
   }, []);
 
   useEffect(() => {
     const fetchTopProducts = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch("http://localhost:3000/top-rated-products");
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+      const res = await fetch("http://localhost:3000/top-rated-products");
+      const data = await res.json();
+      setProducts(data);
+      setLoading(false);
     };
     fetchTopProducts();
   }, []);
 
+  const handelAddToCart = (productId, e) => {
+    e.stopPropagation();
+    const filterproduct = products.find(p => p._id.toString() === productId.toString());
+    const data = { ...filterproduct, userEmail: user.email };
 
+    fetch("http://localhost:3000/cart", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(() => alert('Product added to cart successfully!'));
+  };
 
-
-
-      const handelAddToCart = (productId, e) => {
-        e.stopPropagation();
-        const filterproduct = products.find(p => p._id.toString() === productId.toString());
-
-        const data={
-            ...filterproduct,
-            userEmail:user.email
-        };
-        
-        fetch("http://localhost:3000/cart",{
-            method:"POST",
-            headers:{
-                 'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(data)
-        })
-        .then(res=>res.json())
-        .then(Response=>{
-            console.log("added to card",Response);
-            alert('Product added to cart successfully!');
-        })
-        .catch(err => {
-        console.error('Error adding to cart:', err);
-        alert('Failed to add product to cart.');
-          });
-
-
-        
-    }
-
-
-        const handelorder = (productId, e) => {
-        if(e) e.stopPropagation();
-        navigate(`/orderpage/${productId}`);
-    }
-
+  const handelorder = (productId, e) => {
+    e.stopPropagation();
+    navigate(`/orderpage/${productId}`);
+  };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <section className="bg-green-800 text-white py-20 px-6 md:px-20 flex flex-col items-center text-center">
-        <div className="md:w-2/3 flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-            Welcome to DailyShopBD
-          </h1>
-          <p className="text-lg md:text-xl mb-6">
-            Discover amazing products at unbeatable prices. Shop with ease and enjoy fast delivery!
+    <div className="w-full bg-gray-50 min-h-screen">
+
+      <section className="bg-green-800 text-white py-20 max-w-[95%] mx-auto rounded-3xl mt-5">
+        <div className="px-6 md:px-20 text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Welcome to DailyShopBD</h1>
+          <p className="text-lg md:text-xl mb-8">
+            Discover amazing products at unbeatable prices with fast, reliable delivery.
           </p>
-          <Link to='/products' className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
+          <Link
+            to="/products"
+            className="bg-yellow-400 text-green-900 px-8 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition"
+          >
             Shop Now
           </Link>
         </div>
       </section>
 
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
-          Shop by Category
-        </h2>
+      <section className="py-16 max-w-[95%] mx-auto mt-10">
+        <h2 className="text-3xl font-bold text-green-800 mb-10 text-center">Shop by Category</h2>
+
         <Swiper
           slidesPerView={3}
           spaceBetween={20}
           navigation
-          loop={true}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          loop
+          autoplay={{ delay: 2500 }}
           breakpoints={{
-            0: { slidesPerView: 1, spaceBetween: 10 },
-            640: { slidesPerView: 2, spaceBetween: 15 },
-            1024: { slidesPerView: 3, spaceBetween: 20 },
+            0: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
           }}
           modules={[Pagination, Navigation, Autoplay]}
           pagination={{ clickable: true }}
         >
           {categories.map((category, index) => (
             <SwiperSlide key={index}>
-              <div className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center hover:shadow-2xl transition cursor-pointer">
-                <img src={category.img} alt={category.name} className="rounded-xl mb-3 w-full h-32 object-cover"/>
+              <div className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center hover:shadow-2xl transition">
+                <img
+                  src={category.img}
+                  alt={category.name}
+                  className="rounded-xl mb-3 w-full h-40 object-cover"
+                />
                 <span className="font-semibold text-green-800">{category.name}</span>
               </div>
             </SwiperSlide>
@@ -132,74 +103,91 @@ const Home = () => {
         </Swiper>
       </section>
 
-      <section className="py-16 px-6 md:px-20 bg-gray-100">
-        <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
-          Popular Products
-        </h2>
+      <section className="py-16 bg-gray-200 max-w-[95%] mx-auto mt-10 rounded-3xl">
+        <h2 className="text-3xl font-bold text-green-800 mb-10 text-center">Popular Products</h2>
+
         {loading ? (
-          <p className="text-center text-lg font-bold">Loading products...</p>
+          <p className="text-center text-lg font-bold">Loading...</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-6 md:px-10">
             {products.map(product => (
-              <div key={product._id} className="bg-white border rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl flex flex-col">
-                <Link to={`/productdetels/${product._id}`} className="flex-1 cursor-pointer">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-56 object-cover"
-                  />
-                  <div className="p-4 flex flex-col">
-                    <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
+              <div
+                key={product._id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden transition hover:shadow-2xl hover:scale-105"
+              >
+                <Link to={`/productdetels/${product._id}`}>
+                  <img src={product.image} className="w-full h-56 object-cover" />
+
+                  <div className="p-5">
+                    <h3 className="text-xl font-bold text-gray-800">{product.name}</h3>
                     <p className="text-green-600 font-semibold mt-2">${product.price}</p>
                     <p className="text-gray-600 text-sm mt-2">{product.shortDescription}</p>
                   </div>
                 </Link>
-                <div className='my-2.5 w-full flex gap-2.5 px-2'>
-                  <button onClick={(e)=>handelAddToCart(product._id ,e)} className='flex-1 font-bold p-2 bg-blue-600 hover:bg-blue-700 rounded text-white'>Add to Cart</button>
-                  <button 
-                  onClick={(e) => handelorder(product._id, e)} 
-                  className='flex-1 font-bold p-2 bg-green-600 hover:bg-green-700 rounded text-white'
-                  >Order Now
+
+                <div className="flex gap-3 px-5 pb-5">
+                  <button
+                    onClick={(e) => handelAddToCart(product._id, e)}
+                    className="flex-1 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700"
+                  >
+                    Add to Cart
+                  </button>
+
+                  <button
+                    onClick={(e) => handelorder(product._id, e)}
+                    className="flex-1 bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700"
+                  >
+                    Order Now
                   </button>
                 </div>
               </div>
             ))}
           </div>
         )}
-        <div className='flex justify-center mt-10'>
-          <Link to='/products' className='px-6 py-3 bg-green-600 hover:bg-green-700 font-bold text-white rounded-xl'>All Products</Link>
+
+        <div className="text-center mt-10">
+          <Link
+            to="/products"
+            className="px-8 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700"
+          >
+            All Products
+          </Link>
         </div>
       </section>
 
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold text-green-800 mb-8 text-center">
-          Why Choose DailyShopBD
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-            <h3 className="font-bold text-green-700 mb-2">Quality Products</h3>
+      <section className="py-16 max-w-[95%] mx-auto mt-10">
+        <h2 className="text-3xl font-bold text-green-800 mb-10 text-center">Why Choose DailyShopBD</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition">
+            <h3 className="text-xl font-bold text-green-700 mb-3">Quality Products</h3>
             <p className="text-gray-600">Only the best items for our customers.</p>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-            <h3 className="font-bold text-green-700 mb-2">Fast Delivery</h3>
+
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition">
+            <h3 className="text-xl font-bold text-green-700 mb-3">Fast Delivery</h3>
             <p className="text-gray-600">Quick and reliable delivery service.</p>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-            <h3 className="font-bold text-green-700 mb-2">Customer Support</h3>
-            <p className="text-gray-600">24/7 support for all your queries.</p>
+
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition">
+            <h3 className="text-xl font-bold text-green-700 mb-3">Customer Support</h3>
+            <p className="text-gray-600">We are here to help you 24/7.</p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-6 md:px-20 text-center bg-green-800 text-white rounded-t-3xl">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Start Your Shopping Journey Today!
-        </h2>
-        <p className="mb-6 text-lg md:text-xl">Join DailyShopBD and explore thousands of amazing products.</p>
-        <Link to='/products' className="bg-yellow-400 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:bg-yellow-300 transition">
+      <section className="py-20 bg-green-800 text-white text-center max-w-[95%] mx-auto mt-10 rounded-3xl mb-10">
+        <h2 className="text-4xl font-bold mb-4">Start Your Shopping Journey Today!</h2>
+        <p className="text-lg md:text-xl mb-8">Join DailyShopBD and explore thousands of amazing products.</p>
+
+        <Link
+          to="/products"
+          className="bg-yellow-400 text-green-900 px-8 py-3 rounded-xl font-bold hover:bg-yellow-300 transition"
+        >
           Shop Now
         </Link>
       </section>
+
     </div>
   );
 };

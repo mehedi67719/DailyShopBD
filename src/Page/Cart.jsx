@@ -27,7 +27,6 @@ const Cart = () => {
   }, [user]);
 
   const handeldelete = async (productid) => {
-    // console.log(productid)
     try {
       const res = await fetch(`http://localhost:3000/cart/${productid}`, {
         method: "DELETE"
@@ -45,15 +44,15 @@ const Cart = () => {
       alert("Failed to remove product from cart");
     }
   }
-console.log(carts)
+
   if (loading) return <div className="text-center mt-10 text-green-800 font-bold">Loading...</div>;
   if (!carts || carts.length === 0) return <div className="text-center mt-10 text-green-800 font-bold">Your cart is empty!</div>;
 
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="max-w-[95%] w-full mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold text-green-800 mb-6">Your Cart</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-xl shadow-lg">
+      <div className="overflow-x-auto w-full">
+        <table className="min-w-full w-full bg-white rounded-xl shadow-lg">
           <thead className="bg-green-800 text-white">
             <tr>
               <th className="py-3 px-4 text-left">#</th>
