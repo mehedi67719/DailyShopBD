@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
       },
       {
         path:'/cart',
-        Component:Cart
+        element:<PrivateRouter><Cart/></PrivateRouter>
         
       },
       {
@@ -75,7 +75,7 @@ export const router = createBrowserRouter([
       },
       {
         path:"clintorder",
-        Component:Clintorder
+        element:<PrivateRouter><Clintorder/></PrivateRouter>
       }
     ]
   },

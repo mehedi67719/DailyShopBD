@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 
 const Productdetels = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loader, setLoader] = useState(true);
     const [error, setError] = useState(null);
+    const navigate=useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:3000/product-detels/${id}`)
@@ -19,6 +20,12 @@ const Productdetels = () => {
                 setLoader(false);
             });
     }, [id]);
+
+
+      const handelOrder = (id, e) => {
+    if (e) e.stopPropagation();
+    navigate(`/orderpage/${id}`);
+  };
 
     if (loader) return <p className='flex justify-center items-center text-3xl font-bold mt-20'>Loading product details...</p>;
     if (error) return <p className='flex justify-center items-center text-3xl font-bold mt-20'>Error: {error}</p>;
@@ -51,7 +58,7 @@ const Productdetels = () => {
 
                     <button
                         className="mt-6 md:mt-10 px-6 md:px-10 py-3 md:py-4 bg-green-600 text-white font-bold text-lg md:text-xl rounded-2xl hover:bg-green-700 transition w-full"
-                        onClick={() => alert('Order placed successfully!')}
+                        onClick={e =>handelOrder(product._id,e) }
                     >
                         Order Now
                     </button>

@@ -69,6 +69,10 @@ const Orderpage = () => {
     };
 
     const handleSubmit = async (e) => {
+        if(!user){
+            alert("Login first then you can order these products.");
+            return;
+        }
         e.preventDefault();
 
         const order = {

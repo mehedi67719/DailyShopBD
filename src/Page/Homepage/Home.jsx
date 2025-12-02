@@ -35,6 +35,10 @@ const Home = () => {
   }, []);
 
   const handelAddToCart = (productId, e) => {
+          if(!user){
+        alert("Login first then you can add products to cart.");
+        return;
+      }
     e.stopPropagation();
     const filterproduct = products.find(p => p._id.toString() === productId.toString());
     const data = { ...filterproduct, userEmail: user.email };

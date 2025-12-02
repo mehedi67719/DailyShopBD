@@ -3,7 +3,7 @@ import Useauth from '../Component/hook/Useauth';
 
 const Cart = () => {
   const { user } = Useauth();
-  const [carts, setCarts] = useState([]);
+  const [carts, setcarts] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,9 +15,7 @@ const Cart = () => {
         const res = await fetch("http://localhost:3000/cart");
         const data = await res.json();
         const filterdata = data.filter(d => d.userEmail === user.email);
-        setCarts(filterdata);
-      } catch (err) {
-        console.log(err);
+        setcarts(filterdata);
       } finally {
         setLoading(false);
       }
@@ -26,24 +24,28 @@ const Cart = () => {
     getCart();
   }, [user]);
 
-  const handeldelete = async (productid) => {
-    try {
-      const res = await fetch(`http://localhost:3000/cart/${productid}`, {
-        method: "DELETE"
-      });
-      const data = await res.json();
 
-      if (res.ok) {
-        setCarts(prev => prev.filter(c => c._id.toString() !== productid.toString()));
-        alert(data.message);
-      } else {
-        alert(data.message);
-      }
-    } catch (err) {
-      console.log(err);
-      alert("Failed to remove product from cart");
-    }
+
+
+const handeldelete = async (id) => {
+  console.log("Deleting ID:", id);  
+  try {
+    const res = await fetch(`http://localhost:3000/cart/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+    console.log("Server response:", data);
+
+    if (!res.ok) throw new Error(data.message || "Failed to delete cart item");
+
+    setcarts(carts.filter(o => o._id.toString() !== id.toString()));
+  } catch (err) {
+    console.log(err.message);
   }
+}
+
+
 
   if (loading) return <div className="text-center mt-10 text-green-800 font-bold">Loading...</div>;
   if (!carts || carts.length === 0) return <div className="text-center mt-10 text-green-800 font-bold">Your cart is empty!</div>;
@@ -74,7 +76,10 @@ const Cart = () => {
                 <td className="py-3 px-4 font-bold text-green-700">${product.price}</td>
                 <td className="py-3 px-4 text-gray-600">{product.brand || "Unknown Brand"}</td>
                 <td className="py-3 px-4">
-                  <button onClick={() => handeldelete(product._id)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl transition">
+                  <button
+                    onClick={() => handeldelete(product._id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl transition"
+                  >
                     Remove
                   </button>
                 </td>

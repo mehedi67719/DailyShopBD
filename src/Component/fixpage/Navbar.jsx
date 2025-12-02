@@ -39,7 +39,9 @@ const Navbar = () => {
           <NavLink to="/about" className={({ isActive }) => isActive ? "underline text-yellow-300" : "hover:text-yellow-300"}>About</NavLink>
           <NavLink to="/contact" className={({ isActive }) => isActive ? "underline text-yellow-300" : "hover:text-yellow-300"}>Contact Us</NavLink>
           <NavLink to="/area" className={({ isActive }) => isActive ? "underline text-yellow-300" : "hover:text-yellow-300"}>Service Area</NavLink>
-          <NavLink to="/cart" className="hover:text-yellow-300 text-2xl flex items-center"><FaShoppingCart /></NavLink>
+          {
+            user?(<NavLink to="/cart" className="hover:text-yellow-300 text-2xl flex items-center"><FaShoppingCart /></NavLink>):("")
+          }
         </div>
 
         {user ? (
