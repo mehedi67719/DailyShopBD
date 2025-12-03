@@ -25,7 +25,7 @@ const Sellerproducts = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3000/products/${id}`, {
+      await fetch(`http://localhost:3000/all-products/${id}`, {
         method: "DELETE"
       });
       setProducts(prev => prev.filter(p => p._id !== id));
@@ -34,7 +34,7 @@ const Sellerproducts = () => {
     }
   };
 
-  if (loader) return <p className="text-center mt-10 text-lg">Loading...</p>;
+  if (loader) return <p className="text-center text-black mt-10 text-lg">Loading...</p>;
 
   return (
     <div className="w-full flex justify-center  py-8">
