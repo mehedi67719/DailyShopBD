@@ -9,7 +9,7 @@ const Productdetels = () => {
     const navigate=useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/product-detels/${id}`)
+        fetch(`https://daily-shop-bd-server.vercel.app/product-detels/${id}`)
             .then(res => res.json())
             .then(data => {
                 setProduct(data);

@@ -26,7 +26,7 @@ const Orderpage = () => {
     });
 
     useEffect(() => {
-        fetch(`http://localhost:3000/product-detels/${id}`)
+        fetch(`https://daily-shop-bd-server.vercel.app/product-detels/${id}`)
             .then(res => res.json())
             .then(data => {
                 setProduct(data);
@@ -82,7 +82,7 @@ const Orderpage = () => {
             ...formData
         };
 
-        const res = await fetch("http://localhost:3000/order", {
+        const res = await fetch("https://daily-shop-bd-server.vercel.app/order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(order)

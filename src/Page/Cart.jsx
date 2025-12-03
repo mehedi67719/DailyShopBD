@@ -12,7 +12,7 @@ const Cart = () => {
     const getCart = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:3000/cart");
+        const res = await fetch("https://daily-shop-bd-server.vercel.app/cart");
         const data = await res.json();
         const filterdata = data.filter(d => d.userEmail === user.email);
         setcarts(filterdata);
@@ -30,7 +30,7 @@ const Cart = () => {
 const handeldelete = async (id) => {
   console.log("Deleting ID:", id);  
   try {
-    const res = await fetch(`http://localhost:3000/cart/${id}`, {
+    const res = await fetch(`https://daily-shop-bd-server.vercel.app/cart/${id}`, {
       method: "DELETE",
     });
 

@@ -9,7 +9,7 @@ const Sellerproducts = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/all-products");
+        const res = await fetch("https://daily-shop-bd-server.vercel.app/all-products");
         const data = await res.json();
         setProducts(data);
       } catch (err) {
@@ -25,7 +25,7 @@ const Sellerproducts = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3000/all-products/${id}`, {
+      await fetch(`https://daily-shop-bd-server.vercel.app/all-products/${id}`, {
         method: "DELETE"
       });
       setProducts(prev => prev.filter(p => p._id !== id));

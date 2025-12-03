@@ -16,7 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const res = await fetch("http://localhost:3000/categories");
+      const res = await fetch("https://daily-shop-bd-server.vercel.app/categories");
       const data = await res.json();
       setCategories(data);
       setLoading(false);
@@ -26,7 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchTopProducts = async () => {
-      const res = await fetch("http://localhost:3000/top-rated-products");
+      const res = await fetch("https://daily-shop-bd-server.vercel.app/top-rated-products");
       const data = await res.json();
       setProducts(data);
       setLoading(false);
@@ -43,7 +43,7 @@ const Home = () => {
     const filterproduct = products.find(p => p._id.toString() === productId.toString());
     const data = { ...filterproduct, userEmail: user.email };
 
-    fetch("http://localhost:3000/cart", {
+    fetch("https://daily-shop-bd-server.vercel.app/cart", {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)

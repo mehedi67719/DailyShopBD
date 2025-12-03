@@ -13,7 +13,7 @@ const Clintorder = () => {
         const fetchOrders = async () => {
             try {
                 setLoader(true);
-                const res = await fetch("http://localhost:3000/clint-order");
+                const res = await fetch("https://daily-shop-bd-server.vercel.app/clint-order");
                 if (!res.ok) throw new Error("Failed to fetch orders");
                 const data = await res.json();
                 const filterdata = data.filter(d => d.email.toString() === user.email.toString());
@@ -32,7 +32,7 @@ const Clintorder = () => {
 
     const handeldelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3000/clint-order/${id}`, {
+            const res = await fetch(`https://daily-shop-bd-server.vercel.app/clint-order/${id}`, {
                 method: "DELETE",
             });
             if (!res.ok) throw new Error("Failed to delete order");

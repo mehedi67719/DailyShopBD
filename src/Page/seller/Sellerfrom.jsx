@@ -27,7 +27,7 @@ const SellerRegisterForm = () => {
 
 
   useEffect(() => {
-    fetch("http://localhost:3000/categories")
+    fetch("https://daily-shop-bd-server.vercel.app/categories")
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(() => setCategories([]));
@@ -39,7 +39,7 @@ const SellerRegisterForm = () => {
       if (!user) return;
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:3000/seller");
+        const res = await fetch("https://daily-shop-bd-server.vercel.app/seller");
         const data = await res.json();
         const found = data.find(s => s.email === user.email);
         setSeller(found || null);
@@ -57,7 +57,7 @@ const SellerRegisterForm = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch("http://localhost:3000/sellers", {
+      const res = await fetch("https://daily-shop-bd-server.vercel.app/sellers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -91,7 +91,7 @@ const SellerRegisterForm = () => {
 
 
       console.log(productData)
-      const res = await fetch("http://localhost:3000/products", {
+      const res = await fetch("https://daily-shop-bd-server.vercel.app/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData)

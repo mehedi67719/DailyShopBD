@@ -18,7 +18,7 @@ const Products = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `http://localhost:3000/products?search=${searchTerm}&category=${category}&page=${page}&limit=8`
+      `https://daily-shop-bd-server.vercel.app/products?search=${searchTerm}&category=${category}&page=${page}&limit=8`
     )
       .then(res => res.json())
       .then(data => {
@@ -35,14 +35,14 @@ const Products = () => {
   }, [searchTerm, category, page]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/categories")
+    fetch("https://daily-shop-bd-server.vercel.app/categories")
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(() => setCategories([]));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:3000/cart")
+    fetch("https://daily-shop-bd-server.vercel.app/cart")
       .then(res => res.json())
       .then(data => setCartItems(data))
       .catch(() => setCartItems([]));
@@ -56,7 +56,7 @@ const Products = () => {
     const product = products.find(p => p._id === id);
     if (cartItems.find(item => item._id === id)) return alert("Product already in cart!");
     const data = { ...product, userEmail: user.email };
-    fetch("http://localhost:3000/cart", {
+    fetch("https://daily-shop-bd-server.vercel.app/cart", {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
