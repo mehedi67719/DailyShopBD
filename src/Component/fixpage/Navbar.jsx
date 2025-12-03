@@ -58,6 +58,8 @@ const Navbar = () => {
                 <Link className="block px-4 py-2 hover:bg-green-100" to="/profile">Profile</Link>
                 <Link className="block px-4 py-2 hover:bg-green-100" to="/dashboard">Dashboard</Link>
                 <Link to='/clintorder' className="block px-4 py-2 hover:bg-green-100">Your orders</Link>
+                <Link to='/sellerfrom' className="block px-4 py-2 hover:bg-green-100">Add a Product</Link>
+                <Link to='/sellerproducts' className="block px-4 py-2 hover:bg-green-100">Your Products</Link>
                 <button onClick={handleLogout} className="block px-4 py-2 hover:bg-green-100 w-full text-left">Logout</button>
               </div>
             )}

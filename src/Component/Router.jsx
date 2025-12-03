@@ -14,6 +14,8 @@ import Productdetels from "../Page/Productdetels";
 import Cart from "../Page/Cart";
 import Orderpage from "../Page/Orderpage";
 import Clintorder from "../Page/Clintorder";
+import SellerRegisterForm from "../Page/seller/Sellerfrom";
+
 
 
 
@@ -76,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path:"clintorder",
         element:<PrivateRouter><Clintorder/></PrivateRouter>
+      },
+      {
+        path:"/sellerfrom",
+        element:<PrivateRouter><SellerRegisterForm/></PrivateRouter>
       }
     ]
   },
