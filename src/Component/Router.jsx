@@ -15,6 +15,7 @@ import Cart from "../Page/Cart";
 import Orderpage from "../Page/Orderpage";
 import Clintorder from "../Page/Clintorder";
 import SellerRegisterForm from "../Page/seller/Sellerfrom";
+import Sellerproducts from "../Page/seller/Sellerproducts";
 
 
 
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path:"/sellerfrom",
         element:<PrivateRouter><SellerRegisterForm/></PrivateRouter>
+      },
+      {
+        path:"/sellerproducts",
+        element:<PrivateRouter><Sellerproducts/></PrivateRouter>
       }
     ]
   },
