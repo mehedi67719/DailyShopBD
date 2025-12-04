@@ -15,42 +15,24 @@ const Products = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-
-      const res = await fetch(
-        `https://daily-shop-bd-server.vercel.app/products?search=${searchTerm}&category=${category}&page=${page}&limit=8`
-      );
-
-      if (!res.ok) {
-        const text = await res.text();
-        console.log("SERVER ERROR RESPONSE:", text);
-        throw new Error("Server error / Not JSON");
-      }
-
-      const data = await res.json();
-
-      if (page === 1) {
-        setProducts(data.products);
-      } else {
-        setProducts(prev => [...prev, ...data.products]);
-      }
-
-      setHasMore(page < data.totalpages);
-      setError(null);
-    } catch (err) {
-      console.log("Fetch Error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchProducts();
-}, [searchTerm, category, page]);
-
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      `https://daily-shop-bd-server.vercel.app/products?search=${searchTerm}&category=${category}&page=${page}&limit=8`
+    )
+      .then(res => res.json())
+      .then(data => {
+        if (page === 1) setProducts(data.products);
+        else setProducts(prev => [...prev, ...data.products]);
+        setHasMore(page < data.totalpages);
+        setLoading(false);
+        setError(null);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [searchTerm, category, page]);
 
   useEffect(() => {
     fetch("https://daily-shop-bd-server.vercel.app/categories")
