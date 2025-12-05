@@ -1,16 +1,92 @@
-# React + Vite
+# DailyShopBD
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**DailyShopBD** is a full-featured MERN (MongoDB, Express, React, Node) e-commerce application.  
+It includes user authentication, product management (CRUD), add-to-cart system, order management, and a complete shopping flow for buyers and sellers.
 
-Currently, two official plugins are available:
+🔗 Repository: https://github.com/mehedi67719/DailyShopBD.git
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Project Overview
+DailyShopBD allows users to:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Create an account and log in using JWT authentication  
+- Browse all products  
+- View full product details  
+- Add products to the cart  
+- Manage cart items  
+- Place orders  
+- View previous orders  
 
-## Expanding the ESLint configuration
+Admins can:
+- Add new products  
+- Update existing products  
+- Delete products  
+- Manage user orders  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project covers almost all core features of a modern online shopping platform.
+
+---
+
+## ⭐ Features
+
+### 🔐 Authentication
+- Register/Login with JWT  
+- Password hashing using bcrypt  
+- Protected routes  
+- User profile access  
+- Error & validation handling  
+
+### 🛒 Product Management (CRUD)
+- Create new products  
+- Read (show all products)  
+- Update product information  
+- Delete products  
+- View individual product details  
+
+### 🛍 Add to Cart System
+- Add items to cart  
+- Update quantity  
+- Remove items from cart  
+- View cart items  
+- Checkout to place order  
+
+### 📦 Order Management
+- Order creation  
+- View user-specific orders  
+- Admin can view all orders  
+- Order detail page  
+
+### 🌐 Frontend Features
+- Beautiful UI with Tailwind CSS  
+- React SPA  
+- Fully responsive  
+- Product page, Cart page, Order page, Details page  
+
+---
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- React.js  
+- Tailwind CSS  
+- React Router  
+- Axios  
+
+### **Backend**
+- Node.js  
+- Express.js  
+- MongoDB (Mongoose)  
+- JSON Web Token (JWT)  
+- bcrypt  
+- dotenv  
+- cors  
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/mehedi67719/DailyShopBD.git
+cd DailyShopBD
